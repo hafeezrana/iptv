@@ -60,8 +60,6 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 
-  // http://6th.lol/get.php?username=LBz06Ufc6N&password=MMjs9g0kLX&type=m3u
-
   @override
   Widget build(BuildContext context) {
     return Shortcuts(
