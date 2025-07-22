@@ -101,211 +101,210 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: kDecorBackground,
         child: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, stateSetting) {
-            return AzulEnvatoChecker(
-              uniqueKey: stateSetting.setting,
-              successPage: SafeArea(
-                child: BlocConsumer<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is AuthFailed) {
-                      showWarningToast(
-                        context,
-                        'Login failed.',
-                        'Please check your IPTV credentials and try again.',
-                      );
-                    } else if (state is AuthSuccess) {
-                      context.read<LiveCatyBloc>().add(GetLiveCategories());
-                      context.read<MovieCatyBloc>().add(GetMovieCategories());
-                      context.read<SeriesCatyBloc>().add(GetSeriesCategories());
-                      Get.offAndToNamed(screenWelcome);
-                    }
-                  },
-                  builder: (context, state) {
-                    final isLoading = state is AuthLoading;
+            return
+                // AzulEnvatoChecker(
+                //   uniqueKey: stateSetting.setting,
+                //   successPage:
+                SafeArea(
+              child: BlocConsumer<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthFailed) {
+                    showWarningToast(
+                      context,
+                      'Login failed.',
+                      'Please check your IPTV credentials and try again.',
+                    );
+                  } else if (state is AuthSuccess) {
+                    context.read<LiveCatyBloc>().add(GetLiveCategories());
+                    context.read<MovieCatyBloc>().add(GetMovieCategories());
+                    context.read<SeriesCatyBloc>().add(GetSeriesCategories());
+                    Get.offAndToNamed(screenWelcome);
+                  }
+                },
+                builder: (context, state) {
+                  final isLoading = state is AuthLoading;
 
-                    return IgnorePointer(
-                      ignoring: isLoading,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () => Get.back(),
-                                  icon: const Icon(
-                                    FontAwesomeIcons.chevronLeft,
-                                    color: Colors.white,
-                                  )),
-                              TextButton.icon(
+                  return IgnorePointer(
+                    ignoring: isLoading,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () => Get.back(),
                                 icon: const Icon(
-                                  FontAwesomeIcons.link,
+                                  FontAwesomeIcons.chevronLeft,
                                   color: Colors.white,
-                                  size: 18,
-                                ),
-                                onPressed: () {
-                                  _convertM3utoXtreme(style);
-                                },
-                                label: Text(
-                                  'ADD M3U',
-                                  style:
-                                      Get.theme.textTheme.bodyMedium!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                )),
+                            TextButton.icon(
+                              icon: const Icon(
+                                FontAwesomeIcons.link,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                              onPressed: () {
+                                _convertM3utoXtreme(style);
+                              },
+                              label: Text(
+                                'ADD M3U',
+                                style: Get.theme.textTheme.bodyMedium!.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: 1.h),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 1.h),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      kIconSplash,
+                                      width: .7.dp,
+                                      height: .7.dp,
+                                      //  color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
+                                Text(
+                                  'SignIn to discover all movies & tv shows & lives tv,\nand enjoy our features.',
+                                  textAlign: TextAlign.center,
+                                  style: Get.textTheme.bodyLarge!.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                TextField(
+                                  controller: _username,
+                                  decoration: InputDecoration(
+                                    hintText: "Username",
+                                    hintStyle:
+                                        Get.textTheme.bodyMedium!.copyWith(
+                                      color: Colors.grey,
+                                    ),
+                                    suffixIcon: const Icon(
+                                      FontAwesomeIcons.solidUser,
+                                      size: 18,
+                                      color: kColorPrimary,
+                                    ),
+                                  ),
+                                  style: style,
+                                ),
+                                const SizedBox(height: 15),
+                                TextField(
+                                  controller: _password,
+                                  decoration: InputDecoration(
+                                    hintText: "Password",
+                                    hintStyle:
+                                        Get.textTheme.bodyMedium!.copyWith(
+                                      color: Colors.grey,
+                                    ),
+                                    suffixIcon: const Icon(
+                                      FontAwesomeIcons.lock,
+                                      size: 18,
+                                      color: kColorPrimary,
+                                    ),
+                                  ),
+                                  style: style,
+                                ),
+                                const SizedBox(height: 15),
+                                TextField(
+                                  controller: _url,
+                                  decoration: InputDecoration(
+                                    hintText: "http://url.domain.net:8080",
+                                    hintStyle:
+                                        Get.textTheme.bodyMedium!.copyWith(
+                                      color: Colors.grey,
+                                    ),
+                                    suffixIcon: const Icon(
+                                      FontAwesomeIcons.link,
+                                      size: 18,
+                                      color: kColorPrimary,
+                                    ),
+                                  ),
+                                  style: style,
+                                ),
+                                const SizedBox(height: 15),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Image.asset(
-                                        kIconSplash,
-                                        width: .7.dp,
-                                        height: .7.dp,
-                                        //  color: Colors.white,
+                                      Icon(
+                                        FontAwesomeIcons.solidCircle,
+                                        color: Colors.white70,
+                                        size: 12.sp,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'By registering, you are agreeing to our ',
+                                        style:
+                                            Get.textTheme.bodyMedium!.copyWith(
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () async {
+                                          var url = Uri.parse(kPrivacy);
+                                          await launchUrl(url,
+                                              mode: LaunchMode
+                                                  .externalApplication);
+                                        },
+                                        child: Text(
+                                          'privacy policy.',
+                                          style: Get.textTheme.bodyMedium!
+                                              .copyWith(
+                                            color:
+                                                kColorPrimary.withOpacity(.70),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 15),
-                                  Text(
-                                    'SignIn to discover all movies & tv shows & lives tv,\nand enjoy our features.',
-                                    textAlign: TextAlign.center,
-                                    style: Get.textTheme.bodyLarge!.copyWith(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  TextField(
-                                    controller: _username,
-                                    decoration: InputDecoration(
-                                      hintText: "Username",
-                                      hintStyle:
-                                          Get.textTheme.bodyMedium!.copyWith(
-                                        color: Colors.grey,
-                                      ),
-                                      suffixIcon: const Icon(
-                                        FontAwesomeIcons.solidUser,
-                                        size: 18,
-                                        color: kColorPrimary,
-                                      ),
-                                    ),
-                                    style: style,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  TextField(
-                                    controller: _password,
-                                    decoration: InputDecoration(
-                                      hintText: "Password",
-                                      hintStyle:
-                                          Get.textTheme.bodyMedium!.copyWith(
-                                        color: Colors.grey,
-                                      ),
-                                      suffixIcon: const Icon(
-                                        FontAwesomeIcons.lock,
-                                        size: 18,
-                                        color: kColorPrimary,
-                                      ),
-                                    ),
-                                    style: style,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  TextField(
-                                    controller: _url,
-                                    decoration: InputDecoration(
-                                      hintText: "http://url.domain.net:8080",
-                                      hintStyle:
-                                          Get.textTheme.bodyMedium!.copyWith(
-                                        color: Colors.grey,
-                                      ),
-                                      suffixIcon: const Icon(
-                                        FontAwesomeIcons.link,
-                                        size: 18,
-                                        color: kColorPrimary,
-                                      ),
-                                    ),
-                                    style: style,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          FontAwesomeIcons.solidCircle,
-                                          color: Colors.white70,
-                                          size: 12.sp,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          'By registering, you are agreeing to our ',
-                                          style: Get.textTheme.bodyMedium!
-                                              .copyWith(
-                                            color: Colors.white70,
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () async {
-                                            var url = Uri.parse(kPrivacy);
-                                            await launchUrl(url,
-                                                mode: LaunchMode
-                                                    .externalApplication);
-                                          },
-                                          child: Text(
-                                            'privacy policy.',
-                                            style: Get.textTheme.bodyMedium!
-                                                .copyWith(
-                                              color: kColorPrimary
-                                                  .withOpacity(.70),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: CardTallButton(
-                              label: "Add User",
-                              isLoading: isLoading,
-                              onTap: () {
-                                //Get.toNamed(screenDownload)
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: CardTallButton(
+                            label: "Add User",
+                            isLoading: isLoading,
+                            onTap: () {
+                              //Get.toNamed(screenDownload)
 
-                                if (_username.text.isNotEmpty &&
-                                    _password.text.isNotEmpty &&
-                                    _url.text.isNotEmpty) {
-                                  context.read<AuthBloc>().add(AuthRegister(
-                                        _username.text,
-                                        _password.text,
-                                        _url.text,
-                                      ));
-                                }
-                              },
-                            ),
+                              if (_username.text.isNotEmpty &&
+                                  _password.text.isNotEmpty &&
+                                  _url.text.isNotEmpty) {
+                                context.read<AuthBloc>().add(AuthRegister(
+                                      _username.text,
+                                      _password.text,
+                                      _url.text,
+                                    ));
+                              }
+                            },
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             );
+            // );
           },
         ),
       ),

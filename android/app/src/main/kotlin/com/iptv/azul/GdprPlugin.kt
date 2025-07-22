@@ -1,29 +1,19 @@
 package com.iptv.azul
 
-
 import android.app.Activity
+import android.content.Context
 import com.google.android.ump.ConsentDebugSettings
-import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
-class GdprPlugin(private val activity: Activity?) : MethodCallHandler {
-
-    companion object {
-        @JvmStatic
-        fun registerWith(registrar: Registrar) {
-            val channel = MethodChannel(registrar.messenger(), "gdpr_plugin")
-            channel.setMethodCallHandler(GdprPlugin(registrar.activity()))
-        }
-    }
-
+class GdprPlugin(private val activity: Activity) : MethodCallHandler {
     private val TAG = "GdprPlugin"
-    private lateinit var consentInformation: ConsentInformation
+    private var consentInformation: ConsentInformation? = null
 
     init {
         initConsentInformation()
@@ -33,13 +23,13 @@ class GdprPlugin(private val activity: Activity?) : MethodCallHandler {
         val debugSettings = ConsentDebugSettings.Builder(activity)
             .addTestDeviceHashedId("TEST-DEVICE-HASHED-ID")
             .build()
-
+        
         val params = ConsentRequestParameters.Builder()
             .setConsentDebugSettings(debugSettings)
             .build()
-
+        
         consentInformation = UserMessagingPlatform.getConsentInformation(activity)
-        consentInformation.requestConsentInfoUpdate(
+        consentInformation?.requestConsentInfoUpdate(
             activity,
             params,
             {
@@ -50,8 +40,7 @@ class GdprPlugin(private val activity: Activity?) : MethodCallHandler {
                     }
                 )
             },
-            {
-                    requestConsentError ->
+            { requestConsentError ->
                 // Handle request consent error
             }
         )
@@ -63,7 +52,7 @@ class GdprPlugin(private val activity: Activity?) : MethodCallHandler {
                 UserMessagingPlatform.loadAndShowConsentFormIfRequired(
                     activity,
                     {
-                        // Handle consent form dismissal
+                        result.success(true)
                     }
                 )
             }

@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mbark_iptv/repository/api/api.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import 'helpers/helpers.dart';
 import 'logic/blocs/auth/auth_bloc.dart';
 import 'logic/blocs/categories/channels/channels_bloc.dart';
@@ -58,6 +59,8 @@ class _MyAppState extends State<MyApp> {
     //Enable FullScreen
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
+
+  // http://6th.lol/get.php?username=LBz06Ufc6N&password=MMjs9g0kLX&type=m3u
 
   @override
   Widget build(BuildContext context) {

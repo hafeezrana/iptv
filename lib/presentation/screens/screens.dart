@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:azul_envato_checker/azul_envato_checker.dart';
 import 'package:filling_slider/filling_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:mbark_iptv/presentation/widgets/better_player_widget.dart';
+import 'package:video_player/video_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -17,6 +19,7 @@ import 'package:screen_brightness_util/screen_brightness_util.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart';
 import 'package:wakelock/wakelock.dart';
 //import 'package:wakelock/wakelock.dart';
@@ -43,6 +46,7 @@ import '../../repository/models/serie_details.dart';
 import '../../repository/models/user.dart';
 import '../../repository/models/watching.dart';
 import '../widgets/widgets.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 
 part 'live/live_categories.dart';
 part 'live/live_channels.dart';

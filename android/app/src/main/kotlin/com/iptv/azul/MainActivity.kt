@@ -6,20 +6,28 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "main_activity_channel"
+    private val GDPR_CHANNEL = "gdpr_plugin"
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Set up the GDPR plugin channel
         flutterEngine?.dartExecutor?.let {
-            MethodChannel(it.binaryMessenger, "gdpr_plugin").setMethodCallHandler(
+            MethodChannel(it.binaryMessenger, GDPR_CHANNEL).setMethodCallHandler(
                 GdprPlugin(this)
             )
         }
-
-        MethodChannel(flutterEngine!!.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
-            if (call.method == "getData") {
-                val dd = resources.getString(R.string.unique_key)
-                result.success(dd)
+        
+        // Set up the main activity channel
+        flutterEngine?.dartExecutor?.let {
+            MethodChannel(it.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+                if (call.method == "getData") {
+                    val dd = resources.getString(R.string.unique_key)
+                    result.success(dd)
+                } else {
+                    result.notImplemented()
+                }
             }
         }
     }
 }
-

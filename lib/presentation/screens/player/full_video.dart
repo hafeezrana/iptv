@@ -16,7 +16,7 @@ class FullVideoScreen extends StatefulWidget {
 }
 
 class _FullVideoScreenState extends State<FullVideoScreen> {
-  late VlcPlayerController _videoPlayerController;
+  late VideoPlayerController _videoPlayerController;
   bool isPlayed = true;
   bool progress = true;
   bool showControllersVideo = true;
@@ -54,17 +54,33 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
   @override
   void initState() {
     Wakelock.enable();
-    _videoPlayerController = VlcPlayerController.network(
-      widget.link,
-      hwAcc: HwAcc.full,
-      autoPlay: true,
-      autoInitialize: true,
-      options: VlcPlayerOptions(),
-    );
+
+    String videoLink =
+        // 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mkv-file.mkv';
+        // 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+        widget.link;
+    print("video link: $videoLink");
+    final url = Uri.parse(videoLink);
+    _videoPlayerController = VideoPlayerController.networkUrl(
+      url,
+      formatHint: VideoFormat.other,
+      videoPlayerOptions: VideoPlayerOptions(
+        mixWithOthers: true,
+        webOptions: const VideoPlayerWebOptions(
+          allowContextMenu: true,
+          allowRemotePlayback: true,
+          controls: VideoPlayerWebOptionsControls.enabled(),
+        ),
+      ),
+    )..initialize();
+
+    _videoPlayerController.play();
+
+    _videoPlayerController.setLooping(true);
+    _settingPage();
 
     super.initState();
     _videoPlayerController.addListener(listener);
-    _settingPage();
 
     timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (showControllersVideo) {
@@ -109,14 +125,15 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
     setState(() {
       sliderValue = progress.floor().toDouble();
     });
-    //convert to Milliseconds since VLC requires MS to set time
-    _videoPlayerController.setTime(sliderValue.toInt() * 1000);
+
+    // convert to Milliseconds since VLC requires MS to set time
+    // _videoPlayerController.seekTo(sliderValue.toInt() * 1000);
   }
 
   @override
   void dispose() async {
     super.dispose();
-    await _videoPlayerController.stopRendererScanning();
+    // await _videoPlayerController.stopRendererScanning();
     await _videoPlayerController.dispose();
     timer.cancel();
     VolumeController().removeListener();
@@ -130,15 +147,15 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Container(
+          SizedBox(
             width: getSize(context).width,
             height: getSize(context).height,
-            color: Colors.black,
-            child: VlcPlayer(
-              controller: _videoPlayerController,
-              aspectRatio: 16 / 9,
-              virtualDisplay: true,
-              placeholder: const SizedBox(),
+            // color: Colors.black,
+            child: VideoPlayer(
+              _videoPlayerController,
+              // aspectRatio: 16 / 9,
+              // virtualDisplay: true,
+              // placeholder: const SizedBox(),
             ),
           ),
 
